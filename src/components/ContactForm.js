@@ -1,50 +1,52 @@
 import React from "react";
+import { redirect, useNavigate } from "react-router-dom";
 
-class ContactForm extends React.Component {
+const ContactForm = (props) => {
+    
+        let contactState = [ { name: '', email: '', } ]
+        // console.log(contactState);
 
-    // "state" is a reserved word, "state" is an object.
-    state = {
-        name : '',
-        email: '',
-    };
+        // for programmatic navigation from one component to another
+        const navigate = useNavigate();
 
-    submit = (e) => {
+        const submit = (e) => {
         e.preventDefault();
-        if(this.state.name === "" || this.state.email === "")
+        if(contactState.name === "" || contactState.email === "")
         {
             alert("All the fields are mandatory!");
             return;
         }
         // console.log(this.state);
-        this.props.addHandler(this.state);  // send the state values to App.js
+        props.addHandler(contactState);  // send the state values to App.js
         // to clear values after submission
-        this.setState({ name: '' , email: '' });
+        contactState = [ { name: '', email: '', } ]
         const name = document.getElementById('name');
         const email = document.getElementById('email');
         name.value = "";
         email.value = "";
+        console.log(props);              
+        // console.log("nik");   
+        navigate('/');
     }
-
-    render() {
+    
         return (
             <div className="ui main">
-                <form onSubmit={this.submit}>  { /* on submitting the form, the submit functin comes into play */ }
+                <form onSubmit={submit}>  { /* on submitting the form, the "submit" functin comes into play */ }
                     <h2>Add Contact</h2>
                     <div>
                         <hr />
                         <div>
                             <label><strong>Username</strong></label>
-                            <input id="name" type="text" placeholder="Enter Username" name="name" onChange={ (e) => this.setState({ name: e.target.value }) }/>
+                            <input id="name" type="text" placeholder="Enter Username" name="name" onChange={ (e) => { contactState.name = e.target.value } }/>
                             <br/>
                             <label><strong>Email</strong></label>
-                            <input id="email" type="email" placeholder="Enter email" name="email" onChange={ (e) => this.setState({ email: e.target.value })} />
+                            <input id="email" type="email" placeholder="Enter email" name="email" onChange={ (e) => { contactState.email = e.target.value } } />
                         </div>
-                        <button type="submit">Submit</button>  
+                        <button type="submit" className="ui blue button" >Submit</button>  
                     </div>                      
                 </form>
             </div>
-        );
-    }
+        );    
 }
 
 export default ContactForm;

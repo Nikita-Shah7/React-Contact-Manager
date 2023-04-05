@@ -2,9 +2,15 @@ import React, { useState, useEffect } from 'react';
 // import { useState } from 'react';    /* to add functionality to our contactList */ 
 // import { useEffect } from 'react';  /* to use local storage; whenever the value changes, the "useEffect helps us to render the values again. */
 import { v4 as uuidv4 } from 'uuid';  /* to provide unique Id to each of contactItems */
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Header from './components/Header';
 import ContactForm from './components/ContactForm';
 import ContactList from './components/ContactList';
+
+// "Switches are changed to "Routes ::
+// https://stackoverflow.com/questions/63124161/attempted-import-error-switch-is-not-exported-from-react-router-dom
+
+
 
 function App() {
 
@@ -72,9 +78,15 @@ function App() {
 
   return (
     <div className="ui container">
-      <Header />
-      <ContactForm addHandler={contactHandler} />  {/* this is required since we have to get data from ContactForm i.e from child to parent */}
-      <ContactList contactProp={contactItems} getContactId={removeContact} />  { /* PropertyName=contactProp, here we pass contacts array to ContactList */}
+      <Router>
+        <Header />
+        <Routes>
+          <Route path='/' element={<ContactList contactProp={contactItems} getContactId={removeContact} />} />
+          <Route path='/add' element={<ContactForm addHandler={contactHandler} />} />
+        </Routes>
+        {/* <ContactForm addHandler={contactHandler} />  this is required since we have to get data from ContactForm i.e from child to parent */}
+        {/* <ContactList contactProp={contactItems} getContactId={removeContact} />  { /* PropertyName=contactProp, here we pass contacts array to ContactList */}
+      </Router>
     </div>
   );
 }
