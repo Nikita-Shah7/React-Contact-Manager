@@ -6,6 +6,7 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Header from './components/Header';
 import ContactForm from './components/ContactForm';
 import ContactList from './components/ContactList';
+import ContactDetails from './components/ContactDetails';
 
 // "Switches are changed to "Routes ::
 // https://stackoverflow.com/questions/63124161/attempted-import-error-switch-is-not-exported-from-react-router-dom
@@ -75,7 +76,6 @@ function App() {
     setContacts(newContactList);
   };
 
-
   return (
     <div className="ui container">
       <Router>
@@ -83,6 +83,7 @@ function App() {
         <Routes>
           <Route path='/' element={<ContactList contactProp={contactItems} getContactId={removeContact} />} />
           <Route path='/add' element={<ContactForm addHandler={contactHandler} />} />
+          <Route path='contact-list/contact-details/:id' element={<ContactDetails />} />
         </Routes>
         {/* <ContactForm addHandler={contactHandler} />  this is required since we have to get data from ContactForm i.e from child to parent */}
         {/* <ContactList contactProp={contactItems} getContactId={removeContact} />  { /* PropertyName=contactProp, here we pass contacts array to ContactList */}
