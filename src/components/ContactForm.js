@@ -24,7 +24,7 @@ const ContactForm = (props) => {
         const email = document.getElementById('email');
         name.value = "";
         email.value = "";
-        console.log(props);              
+        // console.log(props);              
         navigate('/');
     }
     

@@ -27,7 +27,14 @@ function App() {
 
   // to add functionality, we use react Hook
   const LOCAL_STORAGE_KEY = "contactItems";
-  const [contactItems, setContacts] = useState([]); /*we create an "empty" array called contactItems*/ 
+  // const [contactItems, setContacts] = useState([]); /*we create an "empty" array called contactItems*/ 
+
+  // this is to get values from local storage
+  const [ contactItems, setContacts ] = useState( () => {
+    const retrievedContacts = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+    if(retrievedContacts) return (retrievedContacts);
+    else return [];
+  });
 
   // brings contactItem from contactForm
   const contactHandler = (contactItem) => {
@@ -39,32 +46,15 @@ function App() {
   
   // this is to store values to local storage
   useEffect( () => {
-    localStorage.setItem(LOCAL_STORAGE_KEY,JSON.stringify(contactItems));
-    // console.log(JSON.stringify(contactItems));
-    // console.log(JSON.parse(localStorage.getItem("contactList")));
-    // const retrievedContacts = JSON.parse(localStorage.getItem("contactList"));
-    // console.log(retrievedContacts);        
+    localStorage.setItem(LOCAL_STORAGE_KEY,JSON.stringify(contactItems));       
   },[contactItems]);
   
   // // this is to get values from local storage
   // useEffect( () => {
-  //   // console.log("mik")
   //   const retrievedContacts = JSON.parse(localStorage.getItem("contactItems"));
   //   // console.log(retrievedContacts); 
   //   setContacts(retrievedContacts);
-  //   // console.log("nik");
   // },[]);
-
-
-
-  // useEffect(() => {
-  //   const retriveContacts = JSON.parse(localStorage.getItem(contactItems));
-  //   if (retriveContacts) setContacts(retriveContacts);
-  // }, []);
-
-  // useEffect(() => {
-  //   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(contactItems));
-  // }, [contactItems]);
 
 
   // for the functonality of delete button
