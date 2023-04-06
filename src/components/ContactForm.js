@@ -16,7 +16,7 @@ const ContactForm = (props) => {
             alert("All the fields are mandatory!");
             return;
         }
-        // console.log(this.state);
+        
         props.addHandler(contactState);  // send the state values to App.js
         // to clear values after submission
         contactState = [ { name: '', email: '', } ]
@@ -25,28 +25,27 @@ const ContactForm = (props) => {
         name.value = "";
         email.value = "";
         console.log(props);              
-        // console.log("nik");   
         navigate('/');
     }
     
-        return (
-            <div className="ui main">
-                <form onSubmit={submit}>  { /* on submitting the form, the "submit" functin comes into play */ }
-                    <h2>Add Contact</h2>
+    return (
+        <div className="ui main">
+            <form onSubmit={submit}>  { /* on submitting the form, the "submit" functin comes into play */ }
+                <h2>Add Contact</h2>
+                <div>
+                    <hr />
                     <div>
-                        <hr />
-                        <div>
-                            <label><strong>Username</strong></label>
-                            <input id="name" type="text" placeholder="Enter Username" name="name" onChange={ (e) => { contactState.name = e.target.value } }/>
-                            <br/>
-                            <label><strong>Email</strong></label>
-                            <input id="email" type="email" placeholder="Enter email" name="email" onChange={ (e) => { contactState.email = e.target.value } } />
-                        </div>
-                        <button type="submit" className="ui blue button" >Submit</button>  
-                    </div>                      
-                </form>
-            </div>
-        );    
+                        <label><strong>Username</strong></label>
+                        <input id="name" type="text" placeholder="Enter Username" name="name" onChange={ (e) => { contactState.name = e.target.value } }/>
+                        <br/>
+                        <label><strong>Email</strong></label>
+                        <input id="email" type="email" placeholder="Enter email" name="email" onChange={ (e) => { contactState.email = e.target.value } } />
+                    </div>
+                    <button type="submit" className="ui blue button" >Submit</button>  
+                </div>                      
+            </form>
+        </div>
+    );    
 }
 
 export default ContactForm;

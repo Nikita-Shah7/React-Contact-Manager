@@ -7,6 +7,7 @@ import Header from './components/Header';
 import ContactForm from './components/ContactForm';
 import ContactList from './components/ContactList';
 import ContactDetails from './components/ContactDetails';
+import DeleteConfirm from './components/DeleteConfirmation';
 
 // "Switches are changed to "Routes ::
 // https://stackoverflow.com/questions/63124161/attempted-import-error-switch-is-not-exported-from-react-router-dom
@@ -26,7 +27,7 @@ function App() {
 
   // to add functionality, we use react Hook
   const LOCAL_STORAGE_KEY = "contactItems";
-  const [contactItems, setContacts] = useState([]); {/*we create an "empty" array called contactItems*/ }
+  const [contactItems, setContacts] = useState([]); /*we create an "empty" array called contactItems*/ 
 
   // brings contactItem from contactForm
   const contactHandler = (contactItem) => {
@@ -56,7 +57,6 @@ function App() {
 
 
 
-
   // useEffect(() => {
   //   const retriveContacts = JSON.parse(localStorage.getItem(contactItems));
   //   if (retriveContacts) setContacts(retriveContacts);
@@ -69,6 +69,7 @@ function App() {
 
   // for the functonality of delete button
   const removeContact = (id) => {
+    
     // create a new list with all the contact details except the one that is to be deleted
     const newContactList = contactItems.filter( (contactItem) => {
       return contactItem.id !== id;
@@ -84,10 +85,12 @@ function App() {
           <Route path='/' element={<ContactList contactProp={contactItems} getContactId={removeContact} />} />
           <Route path='/add' element={<ContactForm addHandler={contactHandler} />} />
           <Route path='contact-list/contact-details/:id' element={<ContactDetails />} />
+          <Route path='/contact-list/contact-details/contact-delete/:id' element={<DeleteConfirm getContactId={removeContact}/>} />          
         </Routes>
+      </Router>
+      {/* Without using Routes :: */}
         {/* <ContactForm addHandler={contactHandler} />  this is required since we have to get data from ContactForm i.e from child to parent */}
         {/* <ContactList contactProp={contactItems} getContactId={removeContact} />  { /* PropertyName=contactProp, here we pass contacts array to ContactList */}
-      </Router>
     </div>
   );
 }

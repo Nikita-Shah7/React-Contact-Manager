@@ -2,7 +2,7 @@ import React from "react";
 import { useLocation , Link } from "react-router-dom";
 import image from '../images/img2.png';
 
-const ContactDetails = (props) => {
+const ContactDetails = () => {
     const location = useLocation();
     // console.log(location.state);
 
