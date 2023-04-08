@@ -11,6 +11,9 @@ const ContactCard = (props) => {
                     <div className="header"> { props.contact.email } </div>
                 </div>                
             </Link>
+            <Link to={`contact-list/contact-details/contact-edit/${props.contact.id}` } state={  props.contact  } >
+                <i className="edit alternate outline icon yellow"></i>
+            </Link>
             <Link to={`contact-list/contact-details/contact-delete/${props.contact.id}` } state={  props.contact  } >
                 <i className="trash alternate outline icon red"></i>
             </Link>

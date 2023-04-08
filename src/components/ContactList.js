@@ -15,9 +15,9 @@ const ContactList = (props) => {
     // the function will return a JSX block
     const renderContactList = props.contactProp.map( (contactItem) => {
 
-        const passIdToAppJS = (id) => {
-            props.getContactId(id);
-        };
+        // const passIdToAppJS = (id) => {
+        //     props.getContactId(id);
+        // };
 
         return (
             /*
@@ -31,7 +31,7 @@ const ContactList = (props) => {
 
             // here, we see that this part is gonna repeat for many times and so whta we can do is we can make a separate component for this as ContactCard
             */
-            <ContactCard contact={ contactItem } clickTrash={ passIdToAppJS } />
+            <ContactCard contact={ contactItem }/* clickTrash={ passIdToAppJS }*/ />
         );
     }
 )

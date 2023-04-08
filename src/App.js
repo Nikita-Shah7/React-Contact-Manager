@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react';
 // import { useState } from 'react';    /* to add functionality to our contactList */ 
 // import { useEffect } from 'react';  /* to use local storage; whenever the value changes, the "useEffect helps us to render the values again. */
 import { v4 as uuidv4 } from 'uuid';  /* to provide unique Id to each of contactItems */
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import ContactForm from './components/ContactForm';
 import ContactList from './components/ContactList';
 import ContactDetails from './components/ContactDetails';
 import DeleteConfirm from './components/DeleteConfirmation';
+import EditContact from './components/EditContact';
 
 // "Switches are changed to "Routes ::
 // https://stackoverflow.com/questions/63124161/attempted-import-error-switch-is-not-exported-from-react-router-dom
-
 
 
 function App() {
@@ -37,6 +37,7 @@ function App() {
   });
 
   // brings contactItem from contactForm
+  // to add new contact
   const contactHandler = (contactItem) => {
     // console.log(contactItem);
     setContacts([...contactItems,{ id: uuidv4(), ...contactItem }]); /* we give unique to each contactItem */
@@ -57,24 +58,41 @@ function App() {
   // },[]);
 
 
+// edit ContactItem without changing Id
+const editContact = (contact) => {
+  const newContactList = contactItems.filter( (contactItem) => {      
+    if(contactItem.id === contact[0].id)
+    {
+      contactItem.name = contact.name;
+      contactItem.email = contact.email;
+      return contactItem;
+    }
+    else return contactItem.id !== contact[0].id;
+  });
+  setContacts(newContactList);
+  return;
+}
+
+
   // for the functonality of delete button
   const removeContact = (id) => {
     
     // create a new list with all the contact details except the one that is to be deleted
-    const newContactList = contactItems.filter( (contactItem) => {
+    const newContactList = contactItems.filter( (contactItem) => {      
       return contactItem.id !== id;
-    })
+    });
     setContacts(newContactList);
-  };
+  }
 
   return (
     <div className="ui container">
       <Router>
         <Header />
         <Routes>
-          <Route path='/' element={<ContactList contactProp={contactItems} getContactId={removeContact} />} />
+          <Route path='/' element={<ContactList contactProp={contactItems} /* getContactId={removeContact} */ />} />
           <Route path='/add' element={<ContactForm addHandler={contactHandler} />} />
           <Route path='contact-list/contact-details/:id' element={<ContactDetails />} />
+          <Route path='contact-list/contact-details/contact-edit/:id' element={<EditContact editHandler={editContact}/>} />
           <Route path='/contact-list/contact-details/contact-delete/:id' element={<DeleteConfirm getContactId={removeContact}/>} />          
         </Routes>
       </Router>

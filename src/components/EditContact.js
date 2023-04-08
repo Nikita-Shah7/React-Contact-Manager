@@ -1,15 +1,13 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const ContactForm = (props) => {
+const EditContact = (props) => {
+
+    const location = useLocation();
+    const navigate = useNavigate();
+    let contactState = [ { id: location.state.id , name: location.state.name, email: location.state.email } ];
     
-        let contactState = [ { name: '', email: '', } ]
-        // console.log(contactState);
-
-        // for programmatic navigation from one component to another
-        const navigate = useNavigate();
-
-        const submit = (e) => {
+    const edit = (e) => {
         e.preventDefault();
         if(contactState.name === "" || contactState.email === "")
         {
@@ -17,21 +15,18 @@ const ContactForm = (props) => {
             return;
         }
         
-        props.addHandler(contactState);  // send the state values to App.js
-    // console.log(contactState.name);
-        // to clear values after submission
-        contactState = [ { name: '', email: '', } ]
+        props.editHandler(contactState);    // send values to App.js
+        contactState = [ { id:'', name:'', email: '' } ];
         const name = document.getElementById('name');
         const email = document.getElementById('email');
         name.value = "";
         email.value = "";
-        // console.log(props);              
         navigate('/');
     }
-    
+
     return (
         <div className="ui main">
-            <form onSubmit={submit}>  { /* on submitting the form, the "submit" functin comes into play */ }
+            <form onSubmit={edit}>  { /* on submitting the form, the "submit" functin comes into play */ }
                 <h2>Add Contact</h2>
                 <div>
                     <hr />
@@ -42,11 +37,11 @@ const ContactForm = (props) => {
                         <label><strong>Email</strong></label>
                         <input id="email" type="email" placeholder="Enter email" name="email" onChange={ (e) => { contactState.email = e.target.value } } />
                     </div>
-                    <button type="submit" className="ui blue button" >Submit</button>  
+                    <button type="submit" className="ui blue button" >Edit</button>  
                 </div>                      
             </form>
         </div>
-    );    
+    );   
 }
 
-export default ContactForm;
+export default EditContact;
