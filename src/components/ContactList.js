@@ -5,11 +5,7 @@ import { Link } from "react-router-dom";
 const ContactList = (props) => {
     // console.log(props);
     
-//     const contactProp = [
-//         {
-//             id: "1", "name":"nik", email:"jkl@hj.as",
-//         }, 
-// ]
+// const contactProp = [ { id: "1", "name":"nik", email:"jkl@hj.as", }, ]
     
     // here, we will have a function which will take props of contacts and we will map them
     // the function will return a JSX block
@@ -33,8 +29,14 @@ const ContactList = (props) => {
             */
             <ContactCard contact={ contactItem }/* clickTrash={ passIdToAppJS }*/ />
         );
+    })
+
+    // here we add a contacList according to the search Keyword
+    
+
+    const getSearchTerm = (e) => {
+        props.searchHandler(e.target.value);        
     }
-)
 
     return (
         <div className="ui celled list">
@@ -43,7 +45,13 @@ const ContactList = (props) => {
                     <button className="ui blue right button">AddContact</button>
                 </Link>
             </h2>
-            { renderContactList }
+            <div className="ui search">
+                <div className="ui icon input">
+                    <input type="text" placeholder="Search" className="prompt" onChange={ getSearchTerm } />
+                    <i className="icon search"></i>
+                </div>
+            </div>
+            { renderContactList.length > 0 ? renderContactList : "No Match Found" } 
         </div>
     );
 }

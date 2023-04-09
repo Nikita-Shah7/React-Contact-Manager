@@ -44,19 +44,11 @@ function App() {
   }
 
   // we use useEffect; dependencies=contactItems; input=arrow function;
-  
   // this is to store values to local storage
   useEffect( () => {
     localStorage.setItem(LOCAL_STORAGE_KEY,JSON.stringify(contactItems));       
   },[contactItems]);
   
-  // // this is to get values from local storage
-  // useEffect( () => {
-  //   const retrievedContacts = JSON.parse(localStorage.getItem("contactItems"));
-  //   // console.log(retrievedContacts); 
-  //   setContacts(retrievedContacts);
-  // },[]);
-
 
 // edit ContactItem without changing Id
 const editContact = (contact) => {
@@ -73,7 +65,6 @@ const editContact = (contact) => {
   return;
 }
 
-
   // for the functonality of delete button
   const removeContact = (id) => {
     
@@ -84,12 +75,32 @@ const editContact = (contact) => {
     setContacts(newContactList);
   }
 
+  // search functainality
+  const [ searchTerm, setSearchTerm ] = useState("");
+  const searchItems = (searchKeyWord) => {
+    setSearchTerm(searchKeyWord);
+    // console.log(searchKeyWord);
+    if(searchKeyWord !== "" )
+    {
+      setSearchTerm(searchKeyWord);
+      const newContactList = contactItems.filter( (contactItem) => {
+        // console.log(Object.values(contactItem).join("").slice(51));
+        return Object.values(contactItem).join("").slice(51).toLowerCase().includes(searchKeyWord.toLowerCase());
+        /* slice=toExcludeIdWhileSearching */
+      });
+      // console.log(newContactList);
+      setSearchResults(newContactList);      
+    }
+  }
+
+  const [ searchResults, setSearchResults ] = useState([]);
+
   return (
     <div className="ui container">
       <Router>
         <Header />
         <Routes>
-          <Route path='/' element={<ContactList contactProp={contactItems} /* getContactId={removeContact} */ />} />
+          <Route path='/' element={<ContactList contactProp={searchTerm.length < 1 ? contactItems : searchResults } searchItem={searchTerm} searchHandler={searchItems} />} />
           <Route path='/add' element={<ContactForm addHandler={contactHandler} />} />
           <Route path='contact-list/contact-details/:id' element={<ContactDetails />} />
           <Route path='contact-list/contact-details/contact-edit/:id' element={<EditContact editHandler={editContact}/>} />
