@@ -32,9 +32,8 @@ const ContactList = (props) => {
     })
 
     // here we add a contacList according to the search Keyword
-    
-
-    const getSearchTerm = (e) => {
+        
+    const getSearchTerm = (e) => {     
         props.searchHandler(e.target.value);        
     }
 
@@ -51,7 +50,7 @@ const ContactList = (props) => {
                     <i className="icon search"></i>
                 </div>
             </div>
-            { renderContactList.length > 0 ? renderContactList : "No Match Found" } 
+            { renderContactList }
         </div>
     );
 }

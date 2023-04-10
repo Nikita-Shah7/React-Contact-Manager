@@ -9,6 +9,8 @@ import ContactList from './components/ContactList';
 import ContactDetails from './components/ContactDetails';
 import DeleteConfirm from './components/DeleteConfirmation';
 import EditContact from './components/EditContact';
+import Client from '../src/components/AxiosCreate';
+
 
 // "Switches are changed to "Routes ::
 // https://stackoverflow.com/questions/63124161/attempted-import-error-switch-is-not-exported-from-react-router-dom
@@ -29,71 +31,111 @@ function App() {
   const LOCAL_STORAGE_KEY = "contactItems";
   // const [contactItems, setContacts] = useState([]); /*we create an "empty" array called contactItems*/ 
 
-  // this is to get values from local storage
-  const [ contactItems, setContacts ] = useState( () => {
-    const retrievedContacts = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-    if(retrievedContacts) return (retrievedContacts);
-    else return [];
-  });
+  // 1. this is to get values of contactItems from localstorage
+  // const [ contactItems, setContacts ] = useState( () => {
+    // const retrievedContacts = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+
+    // if(retrievedContacts) return (retrievedContacts);
+    // else return [];
+  // });
+
+  // 2. this is to get values of contactItems from server
+  const [ contactItems, setContacts ] = useState([]);
+
+  useEffect( () => {
+    Client.get('').then( (response) => {
+      setContacts(response.data);
+    })
+  },[]);
+
 
   // brings contactItem from contactForm
   // to add new contact
   const contactHandler = (contactItem) => {
+    let id = uuidv4();
+    let contact = [ { "id":id, "name":contactItem.name, "email":contactItem.email } ];
+    // console.log(contact);
+    // console.log(...contact);
+    // console.log({...contact});
     // console.log(contactItem);
-    setContacts([...contactItems,{ id: uuidv4(), ...contactItem }]); /* we give unique to each contactItem */
+    // console.log({...contactItem});
+    // console.log(contact[0].name);
+    // console.log(contact[0].id);
+    // console.log(contactItems);
+    // 2. to post values to the server
+    Client.post('',...contact).then( (response) => {
+      setContacts([...contactItems, response.data ]); /* we give unique to each contactItem */       
+    });    
+    // console.log(contactItems);  // ????
   }
 
   // we use useEffect; dependencies=contactItems; input=arrow function;
-  // this is to store values to local storage
+  // 1. this is to store values to local storage
   useEffect( () => {
     localStorage.setItem(LOCAL_STORAGE_KEY,JSON.stringify(contactItems));       
-  },[contactItems]);
+  },[contactItems]); 
   
 
 // edit ContactItem without changing Id
-const editContact = (contact) => {
-  const newContactList = contactItems.filter( (contactItem) => {      
-    if(contactItem.id === contact[0].id)
-    {
-      contactItem.name = contact.name;
-      contactItem.email = contact.email;
-      return contactItem;
-    }
-    else return contactItem.id !== contact[0].id;
-  });
-  setContacts(newContactList);
+const editContact = (contact) => {  
+  
+  // 1. editContact ( in coordination with localStorage )
+  // const newContactList = contactItems.filter( (contactItem) => {      
+    //   if(contactItem.id === contact[0].id)
+    //   {
+      //     contactItem.name = contact.name;
+      //     contactItem.email = contact.email;
+      //     return contactItem;
+      //   }
+      //   else return contactItem.id !== contact[0].id;
+      // });
+      // setContacts(newContactList);
+
+      // 2. editContact/ UpdateContact (with server)
+      let contact_ = [ { "id": contact[0].id, "name":contact.name, "email":contact.email } ]; 
+      Client.put(`${contact_[0].id}`,...contact_).then( () => {
+        Client.get('').then( (response) => {
+          setContacts(response.data);
+        });
+      });
   return;
 }
 
-  // for the functonality of delete button
+
+  // Delete Contact from ContactList
   const removeContact = (id) => {
+    // 1. create a new list with all the contact details except the one that is to be deleted (in coordination with localStorage)
+    // const newContactList = contactItems.filter( (contactItem) => {      
+    //   return contactItem.id !== id;
+    // });
+    // setContacts(newContactList);
     
-    // create a new list with all the contact details except the one that is to be deleted
-    const newContactList = contactItems.filter( (contactItem) => {      
-      return contactItem.id !== id;
+    // 2. delete contact from server and load the remaining data from server
+    Client.delete(`${id}`);
+    Client.get('').then( (response) => {
+      setContacts(response.data);
     });
-    setContacts(newContactList);
   }
+
 
   // search functainality
   const [ searchTerm, setSearchTerm ] = useState("");
+  const [ searchResults, setSearchResults ] = useState([]);
+
   const searchItems = (searchKeyWord) => {
     setSearchTerm(searchKeyWord);
-    // console.log(searchKeyWord);
     if(searchKeyWord !== "" )
     {
       setSearchTerm(searchKeyWord);
       const newContactList = contactItems.filter( (contactItem) => {
-        // console.log(Object.values(contactItem).join("").slice(51));
-        return Object.values(contactItem).join("").slice(51).toLowerCase().includes(searchKeyWord.toLowerCase());
+        // console.log(Object.values(contactItem).join("").slice(36));
+        return Object.values(contactItem).join("").slice(36).toLowerCase().includes(searchKeyWord.toLowerCase());
         /* slice=toExcludeIdWhileSearching */
       });
-      // console.log(newContactList);
       setSearchResults(newContactList);      
     }
   }
 
-  const [ searchResults, setSearchResults ] = useState([]);
 
   return (
     <div className="ui container">
