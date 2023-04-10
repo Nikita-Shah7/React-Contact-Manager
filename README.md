@@ -1,3 +1,16 @@
+## References
+
+**Github Repo:** [Dipesh Malvia](https://github.com/dmalvia/React_Tutorial_Contact_Manager_App.git)
+
+**Youtube Reference:** [Dipesh Malvia](https://www.youtube.com/watch?v=0riHps91AzE)
+
+**Articles Read:** 
+ - [Medium](https://medium.com/weekly-webtips/use-react-with-json-server-and-create-simple-crud-app-b2bf58cd4558)
+ - [FreeCodeCamp](https://www.freecodecamp.org/news/axios-react-how-to-make-get-post-and-delete-api-requests/)
+ - [React-Router](https://reactrouter.com/en/main)
+ - [Create React App](https://create-react-app.dev/docs/getting-started/)
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
